@@ -1,15 +1,8 @@
 package ray_tracer
 
 import (
-	"math"
 	"testing"
 )
-
-const epsilon float64 = 0.00001
-
-func floatEq(x, y float64) bool {
-	return math.Abs(x-y) <= epsilon
-}
 
 func TestTuple(t *testing.T) {
 	var testTuple = func(act, ref float64) {
@@ -45,5 +38,36 @@ func TestVector(t *testing.T) {
 		t.Errorf("Vector(x, y, z) is expected to return a valid Tuple")
 	} else if !floatEq(v.w, 0.0) {
 		t.Errorf("Vector is expected to have w=%v but returned %v", 0.0, v.w)
+	}
+}
+
+func TestTupleEq(t *testing.T) {
+	p1 := Point(1, 2, 3)
+	p2 := Point(1, 2, 3)
+	v1 := Vector(1, 2, 3)
+	v2 := Vector(1, 2, 3)
+	if !p1.Equal(*p2) {
+		t.Errorf("Point equality failed")
+	}
+	if !v1.Equal(*v2) {
+		t.Errorf("Vector equality failed")
+	}
+}
+
+func TestTupleAdd(t *testing.T) {
+	p := Point(3, -2, 5)
+	v := Vector(-2, 3, 1)
+	expectedPoint := Tuple{1, 1, 6, 1}
+	if !p.Add(*v).Equal(expectedPoint) {
+		t.Errorf("%v + %v is expected to return %v", p, v, expectedPoint)
+	}
+}
+
+func TestTupleSub(t *testing.T) {
+	p := Point(3, 2, 1)
+	v := Point(5, 6, 7)
+	expectedPoint := Tuple{-2, -4, -6, 0}
+	if !p.Sub(*v).Equal(expectedPoint) {
+		t.Errorf("%v - %v is expected to return %v", p, v, expectedPoint)
 	}
 }
