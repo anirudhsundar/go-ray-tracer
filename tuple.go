@@ -40,3 +40,17 @@ func (t1 Tuple) Sub(t2 Tuple) Tuple {
 		t1.z - t2.z,
 		t1.w - t2.w}
 }
+
+func (t1 Tuple) Negate() Tuple {
+	return Tuple{-t1.x,
+		-t1.y,
+		-t1.z,
+		-t1.w}
+}
+
+func (t1 Tuple) ScalarMultiply(v float64) Tuple {
+	return Tuple{v * t1.x,
+		v * t1.y,
+		v * t1.z,
+		v * t1.w}
+}

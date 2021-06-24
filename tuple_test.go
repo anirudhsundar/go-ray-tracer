@@ -41,15 +41,20 @@ func TestVector(t *testing.T) {
 	}
 }
 
-func TestTupleEq(t *testing.T) {
+func TestPointEqual(t *testing.T) {
 	p1 := Point(1, 2, 3)
 	p2 := Point(1, 2, 3)
-	v1 := Vector(1, 2, 3)
-	v2 := Vector(1, 2, 3)
-	if !p1.Equal(*p2) {
+	result := p1.Equal(*p2)
+	if !result {
 		t.Errorf("Point equality failed")
 	}
-	if !v1.Equal(*v2) {
+}
+
+func TestVectorEqual(t *testing.T) {
+	v1 := Vector(1, 2, 3)
+	v2 := Vector(1, 2, 3)
+	result := v1.Equal(*v2)
+	if !result {
 		t.Errorf("Vector equality failed")
 	}
 }
@@ -57,17 +62,67 @@ func TestTupleEq(t *testing.T) {
 func TestTupleAdd(t *testing.T) {
 	p := Point(3, -2, 5)
 	v := Vector(-2, 3, 1)
-	expectedPoint := Tuple{1, 1, 6, 1}
-	if !p.Add(*v).Equal(expectedPoint) {
-		t.Errorf("%v + %v is expected to return %v", p, v, expectedPoint)
+	expected := Tuple{1, 1, 6, 1}
+	result := p.Add(*v)
+	if !result.Equal(expected) {
+		t.Errorf("%v + %v is expected to return %v", p, v, expected)
 	}
 }
 
-func TestTupleSub(t *testing.T) {
+func TestSubPointFromPoint(t *testing.T) {
+	p1 := Point(3, 2, 1)
+	p2 := Point(5, 6, 7)
+	expected := *Vector(-2, -4, -6)
+	result := p1.Sub(*p2)
+	if !result.Equal(expected) {
+		t.Errorf("%v - %v is expected to return %v", p1, p2, expected)
+	}
+}
+
+func TestSubVectorFromPoint(t *testing.T) {
 	p := Point(3, 2, 1)
-	v := Point(5, 6, 7)
-	expectedPoint := Tuple{-2, -4, -6, 0}
-	if !p.Sub(*v).Equal(expectedPoint) {
-		t.Errorf("%v - %v is expected to return %v", p, v, expectedPoint)
+	v := Vector(5, 6, 7)
+	expected := *Point(-2, -4, -6)
+	result := p.Sub(*v)
+	if !result.Equal(expected) {
+		t.Errorf("%v - %v is expected to return %v", p, v, expected)
+	}
+}
+
+func TestSubVectorFromVector(t *testing.T) {
+	v1 := Vector(3, 2, 1)
+	v2 := Vector(5, 6, 7)
+	expected := *Vector(-2, -4, -6)
+	result := v1.Sub(*v2)
+	if !result.Equal(expected) {
+		t.Errorf("%v - %v is expected to return %v", v1, v2, expected)
+	}
+}
+
+func TestSubVectorFromZero(t *testing.T) {
+	zero := Vector(0, 0, 0)
+	v := Vector(1, -2, 3)
+	expected := *Vector(-1, 2, -3)
+	result := zero.Sub(*v)
+	if !result.Equal(expected) {
+		t.Errorf("%v - %v is expected to return %v", zero, v, expected)
+	}
+}
+
+func TestNegateTuple(t *testing.T) {
+	a := Tuple{1, -2, 3, -4}
+	expected := Tuple{-1, 2, -3, 4}
+	result := a.Negate()
+	if !result.Equal(expected) {
+		t.Errorf("Negation of %v is expected to return %v but got %v", a, expected, result)
+	}
+}
+
+func TestScalarMultiply(t *testing.T) {
+	a := Tuple{1, -2, 3, -4}
+	expected := Tuple{3.5, -7, 10.5, -14}
+	result := a.ScalarMultiply(3.5)
+	if !result.Equal(expected) {
+		t.Errorf("Negation of %v is expected to return %v but got %v", a, expected, result)
 	}
 }
