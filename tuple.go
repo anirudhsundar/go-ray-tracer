@@ -49,8 +49,19 @@ func (t1 Tuple) Negate() Tuple {
 }
 
 func (t1 Tuple) ScalarMultiply(v float64) Tuple {
-	return Tuple{v * t1.x,
-		v * t1.y,
-		v * t1.z,
-		v * t1.w}
+	return Tuple{t1.x * v,
+		t1.y * v,
+		t1.z * v,
+		t1.w * v}
+}
+
+func (t1 Tuple) ScalarDivide(v float64) Tuple {
+	return Tuple{t1.x / v,
+		t1.y / v,
+		t1.z / v,
+		t1.w / v}
+}
+
+func (t Tuple) Magnitude() float64 {
+	return math.Sqrt(t.x*t.x + t.y*t.y + t.z*t.z)
 }

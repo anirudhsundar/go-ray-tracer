@@ -1,6 +1,7 @@
 package ray_tracer
 
 import (
+	"math"
 	"testing"
 )
 
@@ -114,4 +115,34 @@ func TestScalarMultiply(t *testing.T) {
 	if !result.Equal(expected) {
 		t.Errorf("Negation of %v is expected to return %v but got %v", a, expected, result)
 	}
+}
+
+func TestScalarDivide(t *testing.T) {
+	a := Tuple{1, -2, 3, -4}
+	expected := Tuple{0.5, -1, 1.5, -2}
+	result := a.ScalarDivide(2)
+	if !result.Equal(expected) {
+		t.Errorf("Negation of %v is expected to return %v but got %v", a, expected, result)
+	}
+}
+
+func MagnitudeTests(t *testing.T, v Tuple, expected float64) {
+	result := v.Magnitude()
+	if !floatEq(expected, result) {
+		t.Errorf("Expected a magnitude of %v for vector %v but got %v", expected, v, result)
+	}
+}
+
+func TestUnitVectorMagnitude(t *testing.T) {
+	unit_v1 := Vector(1, 0, 0)
+	unit_v2 := Vector(1, 0, 0)
+	unit_v3 := Vector(1, 0, 0)
+	MagnitudeTests(t, *unit_v1, 1)
+	MagnitudeTests(t, *unit_v2, 1)
+	MagnitudeTests(t, *unit_v3, 1)
+}
+
+func TestVectorMagnitude(t *testing.T) {
+	v := Vector(1, 2, 3)
+	MagnitudeTests(t, *v, math.Sqrt(14))
 }
