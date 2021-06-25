@@ -59,54 +59,43 @@ func TestVectorEqual(t *testing.T) {
 	}
 }
 
+func AddSubTestUtil(f func(t1, t2 Tuple) Tuple,
+	t1, t2, expected Tuple,
+	t *testing.T) {
+	result := f(t1, t2)
+	if !result.Equal(expected) {
+		t.Errorf("%v + %v is expected to return %v", t1, t2, expected)
+	}
+}
+
 func TestTupleAdd(t *testing.T) {
 	p := Point(3, -2, 5)
 	v := Vector(-2, 3, 1)
-	expected := Tuple{1, 1, 6, 1}
-	result := p.Add(*v)
-	if !result.Equal(expected) {
-		t.Errorf("%v + %v is expected to return %v", p, v, expected)
-	}
+	AddSubTestUtil(Tuple.Add, *p, *v, Tuple{1, 1, 6, 1}, t)
 }
 
 func TestSubPointFromPoint(t *testing.T) {
 	p1 := Point(3, 2, 1)
 	p2 := Point(5, 6, 7)
-	expected := *Vector(-2, -4, -6)
-	result := p1.Sub(*p2)
-	if !result.Equal(expected) {
-		t.Errorf("%v - %v is expected to return %v", p1, p2, expected)
-	}
+	AddSubTestUtil(Tuple.Sub, *p1, *p2, *Vector(-2, -4, -6), t)
 }
 
 func TestSubVectorFromPoint(t *testing.T) {
 	p := Point(3, 2, 1)
 	v := Vector(5, 6, 7)
-	expected := *Point(-2, -4, -6)
-	result := p.Sub(*v)
-	if !result.Equal(expected) {
-		t.Errorf("%v - %v is expected to return %v", p, v, expected)
-	}
+	AddSubTestUtil(Tuple.Sub, *p, *v, *Point(-2, -4, -6), t)
 }
 
 func TestSubVectorFromVector(t *testing.T) {
 	v1 := Vector(3, 2, 1)
 	v2 := Vector(5, 6, 7)
-	expected := *Vector(-2, -4, -6)
-	result := v1.Sub(*v2)
-	if !result.Equal(expected) {
-		t.Errorf("%v - %v is expected to return %v", v1, v2, expected)
-	}
+	AddSubTestUtil(Tuple.Sub, *v1, *v2, *Vector(-2, -4, -6), t)
 }
 
 func TestSubVectorFromZero(t *testing.T) {
 	zero := Vector(0, 0, 0)
 	v := Vector(1, -2, 3)
-	expected := *Vector(-1, 2, -3)
-	result := zero.Sub(*v)
-	if !result.Equal(expected) {
-		t.Errorf("%v - %v is expected to return %v", zero, v, expected)
-	}
+	AddSubTestUtil(Tuple.Sub, *zero, *v, *Vector(-1, 2, -3), t)
 }
 
 func TestNegateTuple(t *testing.T) {
