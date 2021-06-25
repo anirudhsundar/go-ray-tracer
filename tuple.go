@@ -65,3 +65,7 @@ func (t1 Tuple) ScalarDivide(v float64) Tuple {
 func (t Tuple) Magnitude() float64 {
 	return math.Sqrt(t.x*t.x + t.y*t.y + t.z*t.z)
 }
+
+func (t Tuple) Normalize() Tuple {
+	return t.ScalarDivide(t.Magnitude())
+}

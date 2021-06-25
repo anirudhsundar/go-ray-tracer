@@ -146,3 +146,26 @@ func TestVectorMagnitude(t *testing.T) {
 	v := Vector(1, 2, 3)
 	MagnitudeTests(t, *v, math.Sqrt(14))
 }
+
+func NormalizeTests(t *testing.T, expected, v Tuple) {
+	result := v.Normalize()
+	if !result.Equal(expected) {
+		t.Errorf("Expected normalized form of vector %v to be %vbut got %v", v, expected, result)
+	}
+	if !floatEq(1, result.Magnitude()) {
+		t.Errorf("Expected a magnitude of 1 for normalized form of vector %v but got %v", v, result.Magnitude())
+	}
+}
+
+func TestNormalizeUnitVector(t *testing.T) {
+	v := Vector(4, 0, 0)
+	expected := *Vector(1, 0, 0)
+	NormalizeTests(t, expected, *v)
+}
+
+func TestNormalizeVector(t *testing.T) {
+	v := Vector(1, 2, 3)
+	v_mag := math.Sqrt(14)
+	expected := Tuple{v.x / v_mag, v.y / v_mag, v.z / v_mag, 0}
+	NormalizeTests(t, expected, *v)
+}
