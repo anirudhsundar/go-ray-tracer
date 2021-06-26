@@ -1,4 +1,4 @@
-package ray_tracer
+package tuple
 
 import "math"
 
@@ -68,4 +68,15 @@ func (t Tuple) Magnitude() float64 {
 
 func (t Tuple) Normalize() Tuple {
 	return t.ScalarDivide(t.Magnitude())
+}
+
+func (a Tuple) Dot(b Tuple) float64 {
+	return a.x*b.x + a.y*b.y + a.z*b.z + a.w*b.w
+}
+
+func (a Tuple) Cross(b Tuple) Tuple {
+	return *Vector(
+		a.y*b.z-a.z*b.y,
+		a.z*b.x-a.x*b.z,
+		a.x*b.y-a.y*b.x)
 }

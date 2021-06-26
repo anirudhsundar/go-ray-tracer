@@ -1,4 +1,4 @@
-package ray_tracer
+package tuple
 
 import (
 	"math"
@@ -168,4 +168,24 @@ func TestNormalizeVector(t *testing.T) {
 	v_mag := math.Sqrt(14)
 	expected := Tuple{v.x / v_mag, v.y / v_mag, v.z / v_mag, 0}
 	NormalizeTests(t, expected, *v)
+}
+
+func TestDotProduct(t *testing.T) {
+	a := Vector(1, 2, 3)
+	b := Vector(2, 3, 4)
+	var expected float64 = 20
+	result := a.Dot(*b)
+	if result != expected {
+		t.Errorf("Dot product of %v and %v is expected to be %v but got %v", a, b, expected, result)
+	}
+}
+
+func TestCrossProduct(t *testing.T) {
+	a := Vector(1, 2, 3)
+	b := Vector(2, 3, 4)
+	expected := *Vector(-1, 2, -1)
+	result := a.Cross(*b)
+	if result != expected {
+		t.Errorf("Cross product of %v and %v is expected to be %v but got %v", a, b, expected, result)
+	}
 }
