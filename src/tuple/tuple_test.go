@@ -7,38 +7,38 @@ import (
 
 func TestTuple(t *testing.T) {
 	var testTuple = func(act, ref float64) {
-		if !floatEq(act, ref) {
+		if !FloatEq(act, ref) {
 			t.Errorf("Tuple expected to be %v but got %v", ref, act)
 		}
 	}
 	x, y, z, w := 4.3, -4.2, 3.1, 1.0
 	vector := Tuple{x, y, z, w}
-	testTuple(vector.x, x)
-	testTuple(vector.y, y)
-	testTuple(vector.z, z)
-	testTuple(vector.w, w)
+	testTuple(vector.X, x)
+	testTuple(vector.Y, y)
+	testTuple(vector.Z, z)
+	testTuple(vector.W, w)
 	x, y, z, w = 4.3, -4.2, 3.1, 0.0
 	point := Tuple{x, y, z, w}
-	testTuple(point.x, x)
-	testTuple(point.y, y)
-	testTuple(point.z, z)
-	testTuple(point.w, w)
+	testTuple(point.X, x)
+	testTuple(point.Y, y)
+	testTuple(point.Z, z)
+	testTuple(point.W, w)
 }
 
 func TestPoint(t *testing.T) {
 	p := Point(4, -3, 4)
 	if p == nil {
 		t.Errorf("Point(x, y, z) is expected to return a valid Tuple")
-	} else if !floatEq(p.w, 1.0) {
-		t.Errorf("Point is expected to have w=%v but returned %v", 1.0, p.w)
+	} else if !FloatEq(p.W, 1.0) {
+		t.Errorf("Point is expected to have w=%v but returned %v", 1.0, p.W)
 	}
 }
 func TestVector(t *testing.T) {
 	v := Vector(4, -3, 4)
 	if v == nil {
 		t.Errorf("Vector(x, y, z) is expected to return a valid Tuple")
-	} else if !floatEq(v.w, 0.0) {
-		t.Errorf("Vector is expected to have w=%v but returned %v", 0.0, v.w)
+	} else if !FloatEq(v.W, 0.0) {
+		t.Errorf("Vector is expected to have w=%v but returned %v", 0.0, v.W)
 	}
 }
 
@@ -128,7 +128,7 @@ func TestScalarDivide(t *testing.T) {
 
 func MagnitudeTests(t *testing.T, v Tuple, expected float64) {
 	result := v.Magnitude()
-	if !floatEq(expected, result) {
+	if !FloatEq(expected, result) {
 		t.Errorf("Expected a magnitude of %v for vector %v but got %v", expected, v, result)
 	}
 }
@@ -152,7 +152,7 @@ func NormalizeTests(t *testing.T, expected, v Tuple) {
 	if !result.Equal(expected) {
 		t.Errorf("Expected normalized form of vector %v to be %vbut got %v", v, expected, result)
 	}
-	if !floatEq(1, result.Magnitude()) {
+	if !FloatEq(1, result.Magnitude()) {
 		t.Errorf("Expected a magnitude of 1 for normalized form of vector %v but got %v", v, result.Magnitude())
 	}
 }
@@ -166,7 +166,7 @@ func TestNormalizeUnitVector(t *testing.T) {
 func TestNormalizeVector(t *testing.T) {
 	v := Vector(1, 2, 3)
 	v_mag := math.Sqrt(14)
-	expected := Tuple{v.x / v_mag, v.y / v_mag, v.z / v_mag, 0}
+	expected := Tuple{v.X / v_mag, v.Y / v_mag, v.Z / v_mag, 0}
 	NormalizeTests(t, expected, *v)
 }
 

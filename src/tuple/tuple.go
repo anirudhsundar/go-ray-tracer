@@ -4,12 +4,12 @@ import "math"
 
 const epsilon float64 = 0.00001
 
-func floatEq(x, y float64) bool {
+func FloatEq(x, y float64) bool {
 	return math.Abs(x-y) <= epsilon
 }
 
 type Tuple struct {
-	x, y, z, w float64
+	X, Y, Z, W float64
 }
 
 func Point(x, y, z float64) *Tuple {
@@ -21,49 +21,49 @@ func Vector(x, y, z float64) *Tuple {
 }
 
 func (t1 Tuple) Equal(t2 Tuple) bool {
-	return floatEq(t1.x, t2.x) &&
-		floatEq(t1.y, t2.y) &&
-		floatEq(t1.z, t2.z) &&
-		floatEq(t1.w, t2.w)
+	return FloatEq(t1.X, t2.X) &&
+		FloatEq(t1.Y, t2.Y) &&
+		FloatEq(t1.Z, t2.Z) &&
+		FloatEq(t1.W, t2.W)
 }
 
 func (t1 Tuple) Add(t2 Tuple) Tuple {
-	return Tuple{t1.x + t2.x,
-		t1.y + t2.y,
-		t1.z + t2.z,
-		t1.w + t2.w}
+	return Tuple{t1.X + t2.X,
+		t1.Y + t2.Y,
+		t1.Z + t2.Z,
+		t1.W + t2.W}
 }
 
 func (t1 Tuple) Sub(t2 Tuple) Tuple {
-	return Tuple{t1.x - t2.x,
-		t1.y - t2.y,
-		t1.z - t2.z,
-		t1.w - t2.w}
+	return Tuple{t1.X - t2.X,
+		t1.Y - t2.Y,
+		t1.Z - t2.Z,
+		t1.W - t2.W}
 }
 
 func (t1 Tuple) Negate() Tuple {
-	return Tuple{-t1.x,
-		-t1.y,
-		-t1.z,
-		-t1.w}
+	return Tuple{-t1.X,
+		-t1.Y,
+		-t1.Z,
+		-t1.W}
 }
 
 func (t1 Tuple) ScalarMultiply(v float64) Tuple {
-	return Tuple{t1.x * v,
-		t1.y * v,
-		t1.z * v,
-		t1.w * v}
+	return Tuple{t1.X * v,
+		t1.Y * v,
+		t1.Z * v,
+		t1.W * v}
 }
 
 func (t1 Tuple) ScalarDivide(v float64) Tuple {
-	return Tuple{t1.x / v,
-		t1.y / v,
-		t1.z / v,
-		t1.w / v}
+	return Tuple{t1.X / v,
+		t1.Y / v,
+		t1.Z / v,
+		t1.W / v}
 }
 
 func (t Tuple) Magnitude() float64 {
-	return math.Sqrt(t.x*t.x + t.y*t.y + t.z*t.z)
+	return math.Sqrt(t.X*t.X + t.Y*t.Y + t.Z*t.Z)
 }
 
 func (t Tuple) Normalize() Tuple {
@@ -71,12 +71,12 @@ func (t Tuple) Normalize() Tuple {
 }
 
 func (a Tuple) Dot(b Tuple) float64 {
-	return a.x*b.x + a.y*b.y + a.z*b.z + a.w*b.w
+	return a.X*b.X + a.Y*b.Y + a.Z*b.Z + a.W*b.W
 }
 
 func (a Tuple) Cross(b Tuple) Tuple {
 	return *Vector(
-		a.y*b.z-a.z*b.y,
-		a.z*b.x-a.x*b.z,
-		a.x*b.y-a.y*b.x)
+		a.Y*b.Z-a.Z*b.Y,
+		a.Z*b.X-a.X*b.Z,
+		a.X*b.Y-a.Y*b.X)
 }
