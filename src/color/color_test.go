@@ -8,7 +8,7 @@ import (
 
 func TestColor(t *testing.T) {
 	c := color.Color(-0.5, 0.4, 1.7)
-	if c.Red != -0.5 || c.Blue != 0.4 || c.Green != 1.7 {
+	if c.Red != -0.5 || c.Green != 0.4 || c.Blue != 1.7 {
 		t.Errorf("The red, green and blue colors are expected to be %v, %v, %v but got %v, %v %v", -0.5, 0.4, 1.7, c.Red, c.Green, c.Blue)
 	}
 }

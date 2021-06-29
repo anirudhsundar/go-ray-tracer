@@ -7,25 +7,25 @@ import (
 )
 
 type ColorType struct {
-	Red, Blue, Green float64
+	Red, Green, Blue float64
 }
 
 func tupleFromColor(c ColorType) tuple.Tuple {
-	return tuple.Tuple{X: c.Red, Y: c.Blue, Z: c.Green, W: 0}
+	return tuple.Tuple{X: c.Red, Y: c.Green, Z: c.Blue, W: 0}
 }
 
 func colorFromTuple(t tuple.Tuple) *ColorType {
 	return Color(t.X, t.Y, t.Z)
 }
 
-func Color(red, blue, green float64) *ColorType {
-	t := tuple.Tuple{X: red, Y: blue, Z: green, W: 0}
+func Color(red, green, blue float64) *ColorType {
+	t := tuple.Tuple{X: red, Y: green, Z: blue, W: 0}
 	c := ColorType{t.X, t.Y, t.Z}
 	return &c
 }
 
 func (c ColorType) String() string {
-	return fmt.Sprintf("RGB: (%v, %v, %v)", c.Red, c.Blue, c.Green)
+	return fmt.Sprintf("RGB: (%v, %v, %v)", c.Red, c.Green, c.Blue)
 }
 
 func (c1 ColorType) Add(c2 ColorType) *ColorType {
@@ -42,8 +42,8 @@ func (c1 ColorType) Sub(c2 ColorType) *ColorType {
 
 func (c1 ColorType) Multiply(c2 ColorType) *ColorType {
 	return Color(c1.Red*c2.Red,
-		c1.Blue*c2.Blue,
-		c1.Green*c2.Green)
+		c1.Green*c2.Green,
+		c1.Blue*c2.Blue)
 }
 
 func (c1 ColorType) ScalarMultiply(v float64) *ColorType {
