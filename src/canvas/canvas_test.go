@@ -57,7 +57,7 @@ func CompareStringLines(low, high int, str []string, compare string, t *testing.
 
 func TestCanvasToPPMHeader(t *testing.T) {
 	c := canvas.Canvas(5, 3)
-	ppm := c.CanvasToPPM()
+	ppm := c.GetPPMString()
 	str := []string{"P3", "5 3", "255"}
 	CompareStringLines(0, 3, str, ppm, t)
 }
@@ -70,7 +70,7 @@ func TestCanvasToPPMData(t *testing.T) {
 	c.WritePixel(0, 0, *c1)
 	c.WritePixel(2, 1, *c2)
 	c.WritePixel(4, 2, *c3)
-	ppm := c.CanvasToPPM()
+	ppm := c.GetPPMString()
 	str := []string{"255 0 0 0 0 0 0 0 0 0 0 0 0 0 0",
 		"0 0 0 0 0 0 0 128 0 0 0 0 0 0 0",
 		"0 0 0 0 0 0 0 0 0 0 0 0 0 0 255"}
@@ -81,7 +81,7 @@ func TestCanvasToPPMDataLongLines(t *testing.T) {
 	c := canvas.Canvas(10, 2)
 	c1 := color.Color(1, 0.8, 0.6)
 	c.WriteAllPixels(*c1)
-	ppm := c.CanvasToPPM()
+	ppm := c.GetPPMString()
 	str := []string{"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
 		"153 255 204 153 255 204 153 255 204 153 255 204 153",
 		"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
@@ -91,7 +91,7 @@ func TestCanvasToPPMDataLongLines(t *testing.T) {
 
 func TestCanvasToPPMNewLine(t *testing.T) {
 	c := canvas.Canvas(5, 3)
-	ppm := c.CanvasToPPM()
+	ppm := c.GetPPMString()
 	if ppm[len(ppm)-1] != '\n' {
 		t.Errorf("Last character in PPM file is expected to be -1")
 	}

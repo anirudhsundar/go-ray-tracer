@@ -3,6 +3,7 @@ package canvas
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
@@ -66,7 +67,7 @@ func writePixelString(val string, lineLength *int, bufLine *bytes.Buffer, b *byt
 	bufLine.WriteString(val)
 }
 
-func (c *CanvasType) CanvasToPPM() string {
+func (c *CanvasType) GetPPMString() string {
 	var b bytes.Buffer
 	// First 3 lines are going to be headers
 	// First line of PPM format should always be "P3"
@@ -113,4 +114,9 @@ func (c *CanvasType) WriteAllPixels(col color.ColorType) {
 			c.Pixels[i][j] = col
 		}
 	}
+}
+
+func (c *CanvasType) SaveToPPM(filepath string) error {
+	ppm := c.GetPPMString()
+	return ioutil.WriteFile(filepath, []byte(ppm), 0644)
 }

@@ -3,23 +3,23 @@ package color
 import (
 	"fmt"
 
-	"github.com/anirudhsundar/go-ray-tracer/src/tuple"
+	"github.com/anirudhsundar/go-ray-tracer/src/coremath"
 )
 
 type ColorType struct {
 	Red, Green, Blue float64
 }
 
-func tupleFromColor(c ColorType) tuple.Tuple {
-	return tuple.Tuple{X: c.Red, Y: c.Green, Z: c.Blue, W: 0}
+func tupleFromColor(c ColorType) coremath.Tuple {
+	return coremath.Tuple{X: c.Red, Y: c.Green, Z: c.Blue, W: 0}
 }
 
-func colorFromTuple(t tuple.Tuple) *ColorType {
+func colorFromTuple(t coremath.Tuple) *ColorType {
 	return Color(t.X, t.Y, t.Z)
 }
 
 func Color(red, green, blue float64) *ColorType {
-	t := tuple.Tuple{X: red, Y: green, Z: blue, W: 0}
+	t := coremath.Tuple{X: red, Y: green, Z: blue, W: 0}
 	c := ColorType{t.X, t.Y, t.Z}
 	return &c
 }

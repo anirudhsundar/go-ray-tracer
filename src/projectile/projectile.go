@@ -1,15 +1,15 @@
 package projectile
 
-import "github.com/anirudhsundar/go-ray-tracer/src/tuple"
+import "github.com/anirudhsundar/go-ray-tracer/src/coremath"
 
 type Projectile struct {
-	Position tuple.Tuple
-	Velocity tuple.Tuple
+	Position coremath.Tuple
+	Velocity coremath.Tuple
 }
 
 type Environment struct {
-	Gravity tuple.Tuple
-	Wind    tuple.Tuple
+	Gravity coremath.Tuple
+	Wind    coremath.Tuple
 }
 
 func Tick(env Environment, proj Projectile) Projectile {
