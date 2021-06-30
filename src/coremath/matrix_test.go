@@ -46,3 +46,51 @@ func Test3x3Matrix(t *testing.T) {
 	checkMatrixValueAt(m, 1, 1, -2, t)
 	checkMatrixValueAt(m, 2, 2, 1, t)
 }
+
+func Test4x4MatrixEqual(t *testing.T) {
+	m1 := getNewMatrix([]float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}, 4, 4, t)
+	m2 := getNewMatrix([]float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}, 4, 4, t)
+	ok, err := m1.CheckEqual(m2)
+	if !ok {
+		t.Error(err)
+	}
+}
+
+func Test4x4MatrixNotEqual(t *testing.T) {
+	m1 := getNewMatrix([]float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2}, 4, 4, t)
+	m2 := getNewMatrix([]float64{2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1}, 4, 4, t)
+	if m1.Equal(m2) {
+		t.Error("Matrices are not supposed to be equal")
+	}
+}
+
+func Test4x4MatrixMultiply(t *testing.T) {
+	m1 := getNewMatrix(
+		[]float64{
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 8, 7, 6,
+			5, 4, 3, 2},
+		4, 4, t)
+	m2 := getNewMatrix(
+		[]float64{
+			-2, 1, 2, 3,
+			3, 2, 1, -1,
+			4, 3, 6, 5,
+			1, 2, 7, 8},
+		4, 4, t)
+	expected := getNewMatrix(
+		[]float64{
+			20, 22, 50, 48,
+			44, 54, 114, 108,
+			40, 58, 110, 102,
+			16, 26, 46, 42},
+		4, 4, t)
+	result, err := m1.Multiply(m2)
+	if err != nil {
+		t.Error(err)
+	}
+	if !result.Equal(expected) {
+		t.Errorf("Matrix product of \n%v and \n%v is expected to be \n%v, but got \n%v", m1, m2, expected, result)
+	}
+}
