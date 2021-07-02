@@ -113,3 +113,50 @@ func TestMatrixTupl(t *testing.T) {
 		t.Errorf("Product of \n%v and \n%v\n is expected to be \n%v\n but got \n%v", A, b, expected, result)
 	}
 }
+
+func Test4x4MatrixMultiplyIdentity(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			0, 1, 2, 4,
+			1, 2, 4, 8,
+			2, 4, 8, 16,
+			4, 8, 16, 32},
+		4, 4, t)
+	I := coremath.IdentityMatrix(4)
+	result, err := A.MatrixMultiply(I)
+	if err != nil {
+		t.Error(err)
+	}
+	if !result.Equal(A) {
+		t.Errorf("Multiplying \n%v\n by Identitiy matrix returns \n%v \n", A, I)
+	}
+}
+
+func TestMatrixTranspose(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			0, 9, 3, 0,
+			9, 8, 0, 8,
+			1, 8, 5, 3,
+			0, 0, 5, 8},
+		4, 4, t)
+	expected := getNewMatrix(
+		[]float64{
+			0, 9, 1, 0,
+			9, 8, 8, 0,
+			3, 0, 5, 5,
+			0, 8, 3, 8},
+		4, 4, t)
+	result := A.Transpose()
+	if !result.Equal(expected) {
+		t.Errorf("Transpose of \n%v\n is expected to be \n%v\n but got \n%v\n", A, expected, result)
+	}
+}
+
+func TestMatrixTransposeIdentity(t *testing.T) {
+	I := coremath.IdentityMatrix(4)
+	if !I.Transpose().Equal(I) {
+		t.Error("Transpose of Identity should be Identity")
+	}
+
+}

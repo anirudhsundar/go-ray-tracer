@@ -18,6 +18,11 @@ func (m *Matrix) Set(val float64, row, col int) {
 	m.Data[row*m.M+col] = val
 }
 
+func NewEmptyMatrix(rows, cols int) *Matrix {
+	val := Matrix{M: rows, N: cols, Data: make([]float64, rows*cols)}
+	return &val
+}
+
 func NewMatrix(vals []float64, rows, cols int) (*Matrix, error) {
 	m := Matrix{M: rows, N: cols}
 	if len(vals) != m.M*m.N {
@@ -28,6 +33,20 @@ func NewMatrix(vals []float64, rows, cols int) (*Matrix, error) {
 		m.Data[i] = vals[i]
 	}
 	return &m, nil
+}
+
+func IdentityMatrix(n int) *Matrix {
+	m := NewEmptyMatrix(n, n)
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			if i == j {
+				m.Set(1, i, j)
+			} else {
+				m.Set(0, i, j)
+			}
+		}
+	}
+	return m
 }
 
 func (m *Matrix) String() string {
@@ -101,4 +120,14 @@ func (m *Matrix) TupleMultiply(t Tuple) (*Tuple, error) {
 	}
 	result := Tuple{result_vals[0], result_vals[1], result_vals[2], result_vals[3]}
 	return &result, nil
+}
+
+func (m *Matrix) Transpose() *Matrix {
+	trans := NewEmptyMatrix(m.N, m.M)
+	for i := 0; i < m.M; i++ {
+		for j := 0; j < m.N; j++ {
+			trans.Set(m.At(i, j), j, i)
+		}
+	}
+	return trans
 }
