@@ -86,11 +86,30 @@ func Test4x4MatrixMultiply(t *testing.T) {
 			40, 58, 110, 102,
 			16, 26, 46, 42},
 		4, 4, t)
-	result, err := m1.Multiply(m2)
+	result, err := m1.MatrixMultiply(m2)
 	if err != nil {
 		t.Error(err)
 	}
 	if !result.Equal(expected) {
 		t.Errorf("Matrix product of \n%v and \n%v is expected to be \n%v, but got \n%v", m1, m2, expected, result)
+	}
+}
+
+func TestMatrixTupl(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			1, 2, 3, 4,
+			2, 4, 4, 2,
+			8, 6, 4, 1,
+			0, 0, 0, 1},
+		4, 4, t)
+	b := coremath.Tuple{1, 2, 3, 1}
+	expected := coremath.Tuple{18, 24, 33, 1}
+	result, err := A.TupleMultiply(b)
+	if err != nil {
+		t.Error(err)
+	}
+	if !result.Equal(expected) {
+		t.Errorf("Product of \n%v and \n%v\n is expected to be \n%v\n but got \n%v", A, b, expected, result)
 	}
 }

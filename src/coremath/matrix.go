@@ -72,7 +72,7 @@ func (m1 *Matrix) Equal(m2 *Matrix) bool {
 	return true
 }
 
-func (m1 *Matrix) Multiply(m2 *Matrix) (*Matrix, error) {
+func (m1 *Matrix) MatrixMultiply(m2 *Matrix) (*Matrix, error) {
 	if m1.N != m2.M {
 		return nil, fmt.Errorf("Incompatible dimensions for product %d != %d for matrices with dimensions (%d, %d) & (%d, %d)", m1.N, m2.M, m1.M, m1.N, m2.M, m2.N)
 	}
@@ -85,5 +85,20 @@ func (m1 *Matrix) Multiply(m2 *Matrix) (*Matrix, error) {
 			}
 		}
 	}
+	return &result, nil
+}
+
+func (m *Matrix) TupleMultiply(t Tuple) (*Tuple, error) {
+	if m.N != 4 {
+		return nil, fmt.Errorf("Matrix should have only 4 columns")
+	}
+	result_vals := [4]float64{0, 0, 0, 0}
+	tuple_vals := t.GetArray()
+	for i := 0; i < 4; i++ {
+		for j := 0; j < 4; j++ {
+			result_vals[i] += m.At(i, j) * tuple_vals[j]
+		}
+	}
+	result := Tuple{result_vals[0], result_vals[1], result_vals[2], result_vals[3]}
 	return &result, nil
 }

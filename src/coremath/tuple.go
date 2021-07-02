@@ -1,6 +1,9 @@
 package coremath
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 const epsilon float64 = 0.00001
 
@@ -79,4 +82,12 @@ func (a Tuple) Cross(b Tuple) Tuple {
 		a.Y*b.Z-a.Z*b.Y,
 		a.Z*b.X-a.X*b.Z,
 		a.X*b.Y-a.Y*b.X)
+}
+
+func (t Tuple) String() string {
+	return fmt.Sprintf("X: %f, Y: %f, Z: %f, W: %f", t.X, t.Y, t.Z, t.W)
+}
+
+func (t Tuple) GetArray() [4]float64 {
+	return [4]float64{t.X, t.Y, t.Z, t.W}
 }
