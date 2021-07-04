@@ -131,3 +131,30 @@ func (m *Matrix) Transpose() *Matrix {
 	}
 	return trans
 }
+
+func (m *Matrix) Determinant2x2() float64 {
+	return m.At(0, 0)*m.At(1, 1) - m.At(1, 0)*m.At(0, 1)
+}
+
+func (m *Matrix) SubMatrix(row, col int) (*Matrix, error) {
+	if m.M != m.N {
+		return nil, fmt.Errorf("SubMatrix can only be calculated for square matrices but got matrix with dims %dx%d", row, col)
+	}
+
+	outRow, outCol := m.M-1, m.N-1
+	ret := NewEmptyMatrix(outRow, outCol)
+	for i, x := 0, 0; i < m.M; i++ {
+		for j, y := 0, 0; j < m.N; j++ {
+			if i != row && j != col {
+				ret.Set(m.At(i, j), x, y)
+				if y == outRow-1 {
+					y = 0
+					x++
+				} else {
+					y++
+				}
+			}
+		}
+	}
+	return ret, nil
+}
