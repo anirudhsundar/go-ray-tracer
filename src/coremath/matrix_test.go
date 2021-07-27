@@ -169,7 +169,7 @@ func Test2x2Determinant(t *testing.T) {
 	var expected float64 = 17
 	result := m.Determinant2x2()
 	if !coremath.FloatEq(result, expected) {
-		t.Errorf("Expected to determinant of \n%v\n to be %v but got %v", m, expected, result)
+		t.Errorf("Expected determinant of \n%v\n to be %v but got %v", m, expected, result)
 	}
 }
 
@@ -214,5 +214,138 @@ func Test4x4SubMatrix(t *testing.T) {
 	check(err, t)
 	if !result.Equal(expected) {
 		t.Errorf("A sub-matrix of row %v and col %v for matrix \n%v\n is expected to be \n%v\n but got \n%v\n", row, col, m, expected, result)
+	}
+}
+
+func Test3x3Minor(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			3, 5, 0,
+			2, -1, -7,
+			6, -1, 5},
+		3, 3, t)
+	expected := float64(25)
+	result, err := A.Minor(1, 0)
+	check(err, t)
+	if !coremath.FloatEq(result, expected) {
+		t.Errorf("Expected Minro of \n%v\n to be %v but got %v", A, expected, result)
+	}
+}
+
+func Test3x3Cofactor(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			3, 5, 0,
+			2, -1, -7,
+			6, -1, 5},
+		3, 3, t)
+	minor00, err := A.Minor(0, 0)
+	check(err, t)
+	expectedMinor00 := -12.0
+	if !coremath.FloatEq(minor00, expectedMinor00) {
+		t.Errorf("Expected minor of \n%v\n at 0,0 to be %f but got %f", A, expectedMinor00, minor00)
+	}
+
+	cofactor00, err := A.Cofactor(0, 0)
+	check(err, t)
+	expectedCofactor00 := -12.0
+	if !coremath.FloatEq(cofactor00, expectedCofactor00) {
+		t.Errorf("Expected cofactor of \n%v\n at 0,0 to be %f but got %f", A, expectedCofactor00, cofactor00)
+	}
+
+	minor10, err := A.Minor(1, 0)
+	check(err, t)
+	expectedMinor10 := 25.0
+	if !coremath.FloatEq(minor10, expectedMinor10) {
+		t.Errorf("Expected minor of \n%v\n at 1,0 to be %f but got %f", A, expectedMinor10, minor10)
+	}
+
+	cofactor10, err := A.Cofactor(1, 0)
+	check(err, t)
+	expectedCofactor10 := -25.0
+	if !coremath.FloatEq(cofactor10, expectedCofactor10) {
+		t.Errorf("Expected cofactor of \n%v\n at 1,0 to be %f but got %f", A, expectedCofactor10, cofactor10)
+	}
+}
+
+func Test3x3Determinant(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			1, 2, 6,
+			-5, 8, -4,
+			2, 6, 4},
+		3, 3, t)
+
+	cofactor00, err := A.Cofactor(0, 0)
+	check(err, t)
+	var expectedCofactor00 float64 = 56
+	if !coremath.FloatEq(cofactor00, expectedCofactor00) {
+		t.Errorf("Expected cofactor of \n%v\n at 0,0 to be %f but got %f", A, expectedCofactor00, cofactor00)
+	}
+
+	cofactor10, err := A.Cofactor(0, 1)
+	check(err, t)
+	var expectedCofactor10 float64 = 12
+	if !coremath.FloatEq(cofactor10, expectedCofactor10) {
+		t.Errorf("Expected cofactor of \n%v\n at 1,0 to be %f but got %f", A, expectedCofactor10, cofactor10)
+	}
+
+	cofactor20, err := A.Cofactor(0, 2)
+	check(err, t)
+	var expectedCofactor20 float64 = -46
+	if !coremath.FloatEq(cofactor20, expectedCofactor20) {
+		t.Errorf("Expected cofactor of \n%v\n at 2,0 to be %f but got %f", A, expectedCofactor20, cofactor20)
+	}
+
+	var expectedDeterminant float64 = -196
+	determinant, err := A.Determinant()
+	check(err, t)
+	if !coremath.FloatEq(determinant, expectedDeterminant) {
+		t.Errorf("Expected determinant of \n%v\n to be %v but got %v", A, expectedDeterminant, determinant)
+	}
+}
+
+func Test4x4Determinant(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			-2, -8, 3, 5,
+			-3, 1, 7, 3,
+			1, 2, -9, 6,
+			-6, 7, 7, -9},
+		4, 4, t)
+
+	cofactor00, err := A.Cofactor(0, 0)
+	check(err, t)
+	var expectedCofactor00 float64 = 690
+	if !coremath.FloatEq(cofactor00, expectedCofactor00) {
+		t.Errorf("Expected cofactor of \n%v\n at 0,0 to be %f but got %f", A, expectedCofactor00, cofactor00)
+	}
+
+	cofactor10, err := A.Cofactor(0, 1)
+	check(err, t)
+	var expectedCofactor10 float64 = 447
+	if !coremath.FloatEq(cofactor10, expectedCofactor10) {
+		t.Errorf("Expected cofactor of \n%v\n at 1,0 to be %f but got %f", A, expectedCofactor10, cofactor10)
+	}
+
+	cofactor20, err := A.Cofactor(0, 2)
+	check(err, t)
+	var expectedCofactor20 float64 = 210
+	if !coremath.FloatEq(cofactor20, expectedCofactor20) {
+		t.Errorf("Expected cofactor of \n%v\n at 2,0 to be %f but got %f", A, expectedCofactor20, cofactor20)
+	}
+
+	cofactor30, err := A.Cofactor(0, 3)
+	check(err, t)
+	var expectedCofactor30 float64 = 51
+	if !coremath.FloatEq(cofactor30, expectedCofactor30) {
+		t.Errorf("Expected cofactor of \n%v\n at 3,0 to be %f but got %f", A, expectedCofactor30, cofactor30)
+	}
+
+	var expectedDeterminant float64 = -4071
+	determinant, err := A.Determinant()
+	check(err, t)
+	if !coremath.FloatEq(determinant, expectedDeterminant) {
+		t.Errorf("Expected determinant of \n%v\n to be %v but got %v", A, expectedDeterminant, determinant)
 	}
 }

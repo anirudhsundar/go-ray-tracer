@@ -3,6 +3,7 @@ package coremath
 import (
 	"bytes"
 	"fmt"
+	"math"
 )
 
 type Matrix struct {
@@ -157,4 +158,40 @@ func (m *Matrix) SubMatrix(row, col int) (*Matrix, error) {
 		}
 	}
 	return ret, nil
+}
+
+func (m *Matrix) Minor(row, col int) (float64, error) {
+	sub, err := m.SubMatrix(row, col)
+	if err != nil {
+		return 0, err
+	}
+	return sub.Determinant()
+}
+
+func (m *Matrix) Cofactor(row, col int) (float64, error) {
+	minor, err := m.Minor(row, col)
+	if err != nil {
+		return 0, err
+	}
+	if (row+col)%2 == 0 {
+		return minor, nil
+	} else {
+		return -minor, nil
+	}
+}
+
+func (m *Matrix) Determinant() (float64, error) {
+	if m.M == 2 && m.N == 2 {
+		return m.Determinant2x2(), nil
+	} else {
+		det := 0.0
+		for i := 0; i < m.M; i++ {
+			cofactor, err := m.Cofactor(0, i)
+			if err != nil {
+				return math.NaN(), err
+			}
+			det += cofactor * m.At(0, i)
+		}
+		return det, nil
+	}
 }
