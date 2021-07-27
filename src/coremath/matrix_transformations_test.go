@@ -156,3 +156,69 @@ func TestRotationZ(t *testing.T) {
 		t.Errorf("Expected rotation along x axis of point %v by %v to be %v but got %v", p, fullQuarterValue, expectedFullQuarter, fullQuarterRotation)
 	}
 }
+
+func TestShear1(t *testing.T) {
+	transform := coremath.Shearing(1, 0, 0, 0, 0, 0)
+	p := coremath.Point(2, 3, 4)
+	expectedShearing := coremath.Point(5, 3, 4)
+	transformedShearing, err := transform.TupleMultiply(*p)
+	check(err, t)
+	if !transformedShearing.Equal(*expectedShearing) {
+		t.Errorf("Expected shearing of (1,0,0,0,0,0) on point %v to be %v, but got %v", p, expectedShearing, transformedShearing)
+	}
+}
+
+func TestShear2(t *testing.T) {
+	transform := coremath.Shearing(0, 1, 0, 0, 0, 0)
+	p := coremath.Point(2, 3, 4)
+	expectedShearing := coremath.Point(6, 3, 4)
+	transformedShearing, err := transform.TupleMultiply(*p)
+	check(err, t)
+	if !transformedShearing.Equal(*expectedShearing) {
+		t.Errorf("Expected shearing of (0,1,0,0,0,0) on point %v to be %v, but got %v", p, expectedShearing, transformedShearing)
+	}
+}
+
+func TestShear3(t *testing.T) {
+	transform := coremath.Shearing(0, 0, 1, 0, 0, 0)
+	p := coremath.Point(2, 3, 4)
+	expectedShearing := coremath.Point(2, 5, 4)
+	transformedShearing, err := transform.TupleMultiply(*p)
+	check(err, t)
+	if !transformedShearing.Equal(*expectedShearing) {
+		t.Errorf("Expected shearing of (0,0,1,0,0,0) on point %v to be %v, but got %v", p, expectedShearing, transformedShearing)
+	}
+}
+
+func TestShear4(t *testing.T) {
+	transform := coremath.Shearing(0, 0, 0, 1, 0, 0)
+	p := coremath.Point(2, 3, 4)
+	expectedShearing := coremath.Point(2, 7, 4)
+	transformedShearing, err := transform.TupleMultiply(*p)
+	check(err, t)
+	if !transformedShearing.Equal(*expectedShearing) {
+		t.Errorf("Expected shearing of (0,0,0,1,0,0) on point %v to be %v, but got %v", p, expectedShearing, transformedShearing)
+	}
+}
+
+func TestShear5(t *testing.T) {
+	transform := coremath.Shearing(0, 0, 0, 0, 1, 0)
+	p := coremath.Point(2, 3, 4)
+	expectedShearing := coremath.Point(2, 3, 6)
+	transformedShearing, err := transform.TupleMultiply(*p)
+	check(err, t)
+	if !transformedShearing.Equal(*expectedShearing) {
+		t.Errorf("Expected shearing of (0,0,0,0,1,0) on point %v to be %v, but got %v", p, expectedShearing, transformedShearing)
+	}
+}
+
+func TestShear6(t *testing.T) {
+	transform := coremath.Shearing(0, 0, 0, 0, 0, 1)
+	p := coremath.Point(2, 3, 4)
+	expectedShearing := coremath.Point(2, 3, 7)
+	transformedShearing, err := transform.TupleMultiply(*p)
+	check(err, t)
+	if !transformedShearing.Equal(*expectedShearing) {
+		t.Errorf("Expected shearing of (0,0,0,0,0,1) on point %v to be %v, but got %v", p, expectedShearing, transformedShearing)
+	}
+}

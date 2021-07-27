@@ -44,3 +44,14 @@ func RotationZ(val float64) *Matrix {
 	m.Set(math.Cos(val), 1, 1)
 	return m
 }
+
+func Shearing(xy, xz, yx, yz, zx, zy float64) *Matrix {
+	m := IdentityMatrix(4)
+	m.Set(xy, 0, 1)
+	m.Set(xz, 0, 2)
+	m.Set(yx, 1, 0)
+	m.Set(yz, 1, 2)
+	m.Set(zx, 2, 0)
+	m.Set(zy, 2, 1)
+	return m
+}
