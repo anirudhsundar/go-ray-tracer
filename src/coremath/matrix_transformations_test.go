@@ -1,6 +1,7 @@
 package coremath_test
 
 import (
+	"math"
 	"testing"
 
 	"github.com/anirudhsundar/go-ray-tracer/src/coremath"
@@ -90,5 +91,68 @@ func TestReflection(t *testing.T) {
 	expectedTranslation := coremath.Point(-2, 3, 4)
 	if !expectedTranslation.Equal(*translated) {
 		t.Errorf("Expected Translation of (-1,1,1) to Point \n%v\n to be \n%v\n, but got \n%v\n", p, expectedTranslation, translated)
+	}
+}
+
+func TestRotationX(t *testing.T) {
+	p := coremath.Point(0, 1, 0)
+	halfQuarterValue := math.Pi / 4.0
+	halfQuarter := coremath.RotationX(halfQuarterValue)
+	halfQuarterRotation, err := halfQuarter.TupleMultiply(*p)
+	check(err, t)
+	expectedHalfQuarter := coremath.Point(0, math.Sqrt2/2, math.Sqrt2/2)
+	if !halfQuarterRotation.Equal(*expectedHalfQuarter) {
+		t.Errorf("Expected rotation along x axis of point %v by %v to be %v but got %v", p, halfQuarterValue, expectedHalfQuarter, halfQuarterRotation)
+	}
+
+	fullQuarterValue := math.Pi / 2.0
+	fullQuarter := coremath.RotationX(fullQuarterValue)
+	fullQuarterRotation, err := fullQuarter.TupleMultiply(*p)
+	check(err, t)
+	expectedFullQuarter := coremath.Point(0, 0, 1)
+	if !fullQuarterRotation.Equal(*expectedFullQuarter) {
+		t.Errorf("Expected rotation along x axis of point %v by %v to be %v but got %v", p, fullQuarterValue, expectedFullQuarter, fullQuarterRotation)
+	}
+}
+
+func TestRotationY(t *testing.T) {
+	p := coremath.Point(0, 0, 1)
+	halfQuarterValue := math.Pi / 4.0
+	halfQuarter := coremath.RotationY(halfQuarterValue)
+	halfQuarterRotation, err := halfQuarter.TupleMultiply(*p)
+	check(err, t)
+	expectedHalfQuarter := coremath.Point(math.Sqrt2/2, 0, math.Sqrt2/2)
+	if !halfQuarterRotation.Equal(*expectedHalfQuarter) {
+		t.Errorf("Expected rotation along x axis of point %v by %v to be %v but got %v", p, halfQuarterValue, expectedHalfQuarter, halfQuarterRotation)
+	}
+
+	fullQuarterValue := math.Pi / 2.0
+	fullQuarter := coremath.RotationY(fullQuarterValue)
+	fullQuarterRotation, err := fullQuarter.TupleMultiply(*p)
+	check(err, t)
+	expectedFullQuarter := coremath.Point(1, 0, 0)
+	if !fullQuarterRotation.Equal(*expectedFullQuarter) {
+		t.Errorf("Expected rotation along x axis of point %v by %v to be %v but got %v", p, fullQuarterValue, expectedFullQuarter, fullQuarterRotation)
+	}
+}
+
+func TestRotationZ(t *testing.T) {
+	p := coremath.Point(0, 1, 0)
+	halfQuarterValue := math.Pi / 4.0
+	halfQuarter := coremath.RotationZ(halfQuarterValue)
+	halfQuarterRotation, err := halfQuarter.TupleMultiply(*p)
+	check(err, t)
+	expectedHalfQuarter := coremath.Point(-math.Sqrt2/2, math.Sqrt2/2, 0)
+	if !halfQuarterRotation.Equal(*expectedHalfQuarter) {
+		t.Errorf("Expected rotation along x axis of point %v by %v to be %v but got %v", p, halfQuarterValue, expectedHalfQuarter, halfQuarterRotation)
+	}
+
+	fullQuarterValue := math.Pi / 2.0
+	fullQuarter := coremath.RotationZ(fullQuarterValue)
+	fullQuarterRotation, err := fullQuarter.TupleMultiply(*p)
+	check(err, t)
+	expectedFullQuarter := coremath.Point(-1, 0, 0)
+	if !fullQuarterRotation.Equal(*expectedFullQuarter) {
+		t.Errorf("Expected rotation along x axis of point %v by %v to be %v but got %v", p, fullQuarterValue, expectedFullQuarter, fullQuarterRotation)
 	}
 }
