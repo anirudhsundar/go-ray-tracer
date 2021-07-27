@@ -349,3 +349,39 @@ func Test4x4Determinant(t *testing.T) {
 		t.Errorf("Expected determinant of \n%v\n to be %v but got %v", A, expectedDeterminant, determinant)
 	}
 }
+
+func TestInvertible(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			6, 4, 4, 4,
+			5, 5, 7, 6,
+			4, -9, 3, -7,
+			9, 1, 7, 6},
+		4, 4, t)
+
+	result, err := A.IsInvertible()
+	if err != nil {
+		t.Error(err)
+	}
+	if !result {
+		t.Errorf("Expected matrix \n%v\n to be invertible but got test as non-invertible", A)
+	}
+}
+
+func TestNonInvertible(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			-4, 2, -2, 3,
+			9, 6, 2, 6,
+			0, -5, 1, -5,
+			0, 0, 0, 0},
+		4, 4, t)
+
+	result, err := A.IsInvertible()
+	if err != nil {
+		t.Error(err)
+	}
+	if result {
+		t.Errorf("Expected matrix \n%v\n to be non-invertible but got test as invertible", A)
+	}
+}

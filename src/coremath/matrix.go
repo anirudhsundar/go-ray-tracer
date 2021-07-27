@@ -195,3 +195,14 @@ func (m *Matrix) Determinant() (float64, error) {
 		return det, nil
 	}
 }
+
+func (m *Matrix) IsInvertible() (bool, error) {
+	det, err := m.Determinant()
+	if err != nil {
+		return false, err
+	}
+	if det == 0 {
+		return false, nil
+	}
+	return true, nil
+}
