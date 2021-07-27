@@ -50,6 +50,16 @@ func IdentityMatrix(n int) *Matrix {
 	return m
 }
 
+func (m *Matrix) Copy() *Matrix {
+	newM := NewEmptyMatrix(m.M, m.N)
+	for i := 0; i < m.M; i++ {
+		for j := 0; j < m.N; j++ {
+			newM.Set(m.At(i, j), i, j)
+		}
+	}
+	return newM
+}
+
 func (m *Matrix) String() string {
 	var b bytes.Buffer
 	for i := 0; i < m.M; i++ {
@@ -205,4 +215,29 @@ func (m *Matrix) IsInvertible() (bool, error) {
 		return false, nil
 	}
 	return true, nil
+}
+
+func (m *Matrix) Inverse() (*Matrix, error) {
+	isInvertible, err := m.IsInvertible()
+	if err != nil {
+		return nil, err
+	}
+	if !isInvertible {
+		return nil, fmt.Errorf("Trying to compute inverse of non-invertible matrix \n%v\n", m)
+	}
+	inv := NewEmptyMatrix(m.N, m.M)
+	det, err := m.Determinant()
+	if err != nil {
+		return nil, err
+	}
+	for i := 0; i < m.M; i++ {
+		for j := 0; j < m.N; j++ {
+			cofactor, err := m.Cofactor(i, j)
+			if err != nil {
+				return nil, err
+			}
+			inv.Set(cofactor/det, j, i)
+		}
+	}
+	return inv, nil
 }

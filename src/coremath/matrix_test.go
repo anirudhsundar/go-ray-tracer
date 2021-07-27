@@ -360,9 +360,7 @@ func TestInvertible(t *testing.T) {
 		4, 4, t)
 
 	result, err := A.IsInvertible()
-	if err != nil {
-		t.Error(err)
-	}
+	check(err, t)
 	if !result {
 		t.Errorf("Expected matrix \n%v\n to be invertible but got test as non-invertible", A)
 	}
@@ -378,10 +376,114 @@ func TestNonInvertible(t *testing.T) {
 		4, 4, t)
 
 	result, err := A.IsInvertible()
-	if err != nil {
-		t.Error(err)
-	}
+	check(err, t)
 	if result {
 		t.Errorf("Expected matrix \n%v\n to be non-invertible but got test as invertible", A)
+	}
+}
+
+func TestInverse1(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			-5, 2, 6, -8,
+			1, -5, 1, 8,
+			7, 7, -6, -7,
+			1, -3, 7, 4},
+		4, 4, t)
+
+	B, err := A.Inverse()
+	check(err, t)
+
+	det, err := A.Determinant()
+	check(err, t)
+	expectedDeterminant := float64(532)
+	if !coremath.FloatEq(det, expectedDeterminant) {
+		t.Errorf("Expected determinant of matrix \n%v\n to be %v, but got %v", A, expectedDeterminant, det)
+	}
+
+	cofactor23, err := A.Cofactor(2, 3)
+	check(err, t)
+	var expectedCofactor23 float64 = -160
+	if !coremath.FloatEq(cofactor23, expectedCofactor23) {
+		t.Errorf("Expected cofactor of \n%v\n at 2,3 to be %f but got %f", A, expectedCofactor23, cofactor23)
+	}
+
+	expectedInverse32 := float64(expectedCofactor23 / expectedDeterminant)
+	if !coremath.FloatEq(B.At(3, 2), expectedInverse32) {
+		t.Errorf("Expected invese of \n%v\n at 3,2 to be %v, but got %v", A, expectedInverse32, B.At(3, 2))
+	}
+
+	cofactor32, err := A.Cofactor(3, 2)
+	check(err, t)
+	var expectedCofactor32 float64 = 105
+	if !coremath.FloatEq(cofactor32, expectedCofactor32) {
+		t.Errorf("Expected cofactor of \n%v\n at 3,2 to be %f but got %f", A, expectedCofactor32, cofactor32)
+	}
+
+	expectedInverse23 := float64(expectedCofactor32 / expectedDeterminant)
+	if !coremath.FloatEq(B.At(2, 3), expectedInverse23) {
+		t.Errorf("Expected invese of \n%v\n at 2,3 to be %v, but got %v", A, expectedInverse23, B.At(3, 2))
+	}
+
+	expectedInverse := getNewMatrix(
+		[]float64{
+			0.21805, 0.45113, 0.24060, -0.04511,
+			-0.80827, -1.45677, -0.44361, 0.52068,
+			-0.07895, -0.22368, -0.05263, 0.19737,
+			-0.52256, -0.81391, -0.30075, 0.30639},
+		4, 4, t)
+	check(err, t)
+	if !B.Equal(expectedInverse) {
+		t.Errorf("Inverse of matrix \n%v\n is expected to be \n%v\n but got \n%v\n", A, expectedInverse, B)
+	}
+}
+
+func TestInverse2(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			8, -5, 9, 2,
+			7, 5, 6, 1,
+			-6, 0, 9, 6,
+			-3, 0, -9, -4},
+		4, 4, t)
+
+	B, err := A.Inverse()
+	check(err, t)
+
+	expectedInverse := getNewMatrix(
+		[]float64{
+			-0.15385, -0.15385, -0.28205, -0.53846,
+			-0.07692, 0.12308, 0.02564, 0.03077,
+			0.35897, 0.35897, 0.43590, 0.92308,
+			-0.69231, -0.69231, -0.76923, -1.92308},
+		4, 4, t)
+	check(err, t)
+	if !B.Equal(expectedInverse) {
+		t.Errorf("Inverse of matrix \n%v\n is expected to be \n%v\n but got \n%v\n", A, expectedInverse, B)
+	}
+}
+
+func TestInverse3(t *testing.T) {
+	A := getNewMatrix(
+		[]float64{
+			9, 3, 0, 9,
+			-5, -2, -6, -3,
+			-4, 9, 6, 4,
+			-7, 6, 6, 2},
+		4, 4, t)
+
+	B, err := A.Inverse()
+	check(err, t)
+
+	expectedInverse := getNewMatrix(
+		[]float64{
+			-0.04074, -0.07778, 0.14444, -0.22222,
+			-0.07778, 0.03333, 0.36667, -0.33333,
+			-0.02901, -0.14630, -0.10926, 0.12963,
+			0.17778, 0.06667, -0.26667, 0.33333},
+		4, 4, t)
+	check(err, t)
+	if !B.Equal(expectedInverse) {
+		t.Errorf("Inverse of matrix \n%v\n is expected to be \n%v\n but got \n%v\n", A, expectedInverse, B)
 	}
 }
