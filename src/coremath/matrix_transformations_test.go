@@ -251,15 +251,11 @@ func TestChainingTransformations(t *testing.T) {
 	}
 
 	// Chained transformations
-
-	T, err := C.MatrixMultiply(B)
+	Tm, err := coremath.MatrixChain(A, B, C) // Similar to calling coremath.MatrixChain(coremath.RotationX(math.Pi/2), coremath.Scaling(5, 5, 5), coremath.Translation(10, 5, 7))
 	check(err, t)
-	T2, err := T.MatrixMultiply(A)
-	check(err, t)
-	Tp, err := T2.TupleMultiply(*p)
-	check(err, t)
-	if !Tp.Equal(*p4) {
-		t.Errorf("The chained transformations result %v don't match the original %v", Tp, p4)
+	T, err := Tm.TupleMultiply(*p)
+	if !T.Equal(*p4) {
+		t.Errorf("The chained transformations result %v don't match the original %v", T, p4)
 	}
 
 }

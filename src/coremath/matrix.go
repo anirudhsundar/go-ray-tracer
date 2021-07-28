@@ -89,7 +89,7 @@ func (m1 *Matrix) CheckEqual(m2 *Matrix) (bool, error) {
 }
 
 func (m1 *Matrix) Equal(m2 *Matrix) bool {
-	if m1.M != m2.M || m1.N != m2.M {
+	if m1.M != m2.M || m1.N != m2.N {
 		return false
 	}
 	for i := 0; i < m1.M; i++ {

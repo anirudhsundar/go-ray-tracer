@@ -1,6 +1,9 @@
 package coremath
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func Translation(x, y, z float64) *Matrix {
 	m := IdentityMatrix(4)
@@ -54,4 +57,29 @@ func Shearing(xy, xz, yx, yz, zx, zy float64) *Matrix {
 	m.Set(zx, 2, 0)
 	m.Set(zy, 2, 1)
 	return m
+}
+
+func MatrixChain(mats ...*Matrix) (*Matrix, error) {
+	matsLen := len(mats)
+	if matsLen == 0 {
+		return nil, fmt.Errorf("Need atleast one matrix for chaining, but got zero\n")
+	}
+	if matsLen == 1 {
+		return mats[0], nil
+	}
+	mLast, mSecondLast := mats[matsLen-1], mats[matsLen-2]
+	m, err := mLast.MatrixMultiply(mSecondLast)
+	if err != nil {
+		return nil, err
+	}
+	if matsLen == 2 {
+		return m, nil
+	}
+	for i := matsLen - 3; i >= 0; i-- {
+		m, err = m.MatrixMultiply(mats[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return m, nil
 }
