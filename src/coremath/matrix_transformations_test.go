@@ -222,3 +222,44 @@ func TestShear6(t *testing.T) {
 		t.Errorf("Expected shearing of (0,0,0,0,0,1) on point %v to be %v, but got %v", p, expectedShearing, transformedShearing)
 	}
 }
+
+func TestChainingTransformations(t *testing.T) {
+	p := coremath.Point(1, 0, 1)
+	A := coremath.RotationX(math.Pi / 2)
+	B := coremath.Scaling(5, 5, 5)
+	C := coremath.Translation(10, 5, 7)
+
+	p2, err := A.TupleMultiply(*p)
+	check(err, t)
+	expectedP2 := coremath.Point(1, -1, 0)
+	if !p2.Equal(*expectedP2) {
+		t.Errorf("Expected \n%v\n * \n%v\n to be %v but got %v", A, p, expectedP2, p2)
+	}
+
+	p3, err := B.TupleMultiply(*p2)
+	check(err, t)
+	expectedP3 := coremath.Point(5, -5, 0)
+	if !p3.Equal(*expectedP3) {
+		t.Errorf("Expected \n%v\n * \n%v\n to be %v but got %v", B, p, expectedP3, p3)
+	}
+
+	p4, err := C.TupleMultiply(*p3)
+	check(err, t)
+	expectedP4 := coremath.Point(15, 0, 7)
+	if !p4.Equal(*expectedP4) {
+		t.Errorf("Expected \n%v\n * \n%v\n to be %v but got %v", C, p, expectedP4, p4)
+	}
+
+	// Chained transformations
+
+	T, err := C.MatrixMultiply(B)
+	check(err, t)
+	T2, err := T.MatrixMultiply(A)
+	check(err, t)
+	Tp, err := T2.TupleMultiply(*p)
+	check(err, t)
+	if !Tp.Equal(*p4) {
+		t.Errorf("The chained transformations result %v don't match the original %v", Tp, p4)
+	}
+
+}
